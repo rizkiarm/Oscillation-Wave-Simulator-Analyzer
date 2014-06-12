@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
+      .canvas-area {
+        position: relative;
+      }
+      #canvas-1-wave {
+        position: absolute;
+        top:0px;
+        left: 0px;
+      }
+      #canvas-2-wave {
+        position: absolute;
+        top:0px;
+        left: 0px;
+      }
+      #canvas-1_2-wave {
+        position: absolute;
+        top:0px;
+        left: 0px;
+      }
+    </style>
+  </head> 
+  <BODY>
+    <div class="canvas-area">
+      <canvas id="canvas-1-bg" width="578" height="200"></canvas>
+      <canvas id="canvas-1-wave" width="578" height="200"></canvas>
+    </div>
+    <div class="canvas-area">
+      <canvas id="canvas-2-bg" width="578" height="200"></canvas>
+      <canvas id="canvas-2-wave" width="578" height="200"></canvas>
+    </div>
+    <div class="canvas-area">
+      <canvas id="canvas-1_2-bg" width="578" height="200"></canvas>
+      <canvas id="canvas-1_2-wave" width="578" height="200"></canvas>
+    </div>
+    <script>
+      var wave1,wave2,wave1_2;
+	    var wavelengthRange, amplitudeRange, phaseRange, speedRange;
+	    var WAVELENGTH_MAGNIFY = 5;
+	    var timer, animateBtn;
+      
+      init();
+      function init(){
+      	var bg1 = new background(1,'#2980b9','#3498db',.3,12,578,200);
+        drawBackground(bg1);
+
+        wave1 = new wave(1, 30, 90, 4, 0, 3, '#ecf0f1', 578, 200);
+        drawWave(wave1);
+
+        var bg2 = new background(2,'#2980b9','#3498db',.3,12,578,200);
+        drawBackground(bg2);
+
+        wave2 = new wave(2, 40, 50, -10, 0, 3, '#ecf0f1', 578, 200);
+        drawWave(wave2);
+
+        var bg1_2 = new background('1_2','#2980b9','#3498db',.3,12,578,200);
+        drawBackground(bg1_2);
+
+        wave1_2 = new wave('1_2', 0, 0, 0, 0, 3, '#ecf0f1', 578, 200);
+        drawSum(wave1_2,wave1,wave2);
+
+        animateStart();
+      }
+      
+      function range(min,max){
+       	var r = new Object();
+        r.min = min;
+        r.max = max;
+        return r;
+      }
+
+      function animateStart() {
+        timer = setInterval(function() {
+          wave1.phase += wave1.speed;
+          wave2.phase += wave2.speed;
+          drawWave(wave1);
+          drawWave(wave2);
+          drawSum(wave1_2,wave1,wave2);
+        }, 1000 / 25);
+      }
+
+      function animateStop() {
+        clearInterval(timer);
+        timer = null;
+      }
+      
+      function wave(idx, wavelength, amplitude, speed, phase, lineWidth, color, width, height){
+       	var w = new Object();
+        w.idx = idx;
+        w.wavelength = wavelength;
+        w.amplitude = amplitude;
+        w.speed = speed;
+        w.phase = phase;
+        w.lineWidth = lineWidth;
+        w.color = color;
+        w.width = width;
+        w.height = height;
+        
+        w.canvas = document.getElementById('canvas-'+idx+'-wave');
+        w.buffer = document.createElement('canvas');
+        w.buffer.width = w.width;
+        w.buffer.height = w.height;
+        
+        return w;
+      }
+      
+      function background(idx, bgColor, lineColor, lineWidth, increment, width, height){
+        var b = new Object();
+        b.idx = idx;
+        b.bgColor = bgColor;
+        b.lineColor = lineColor;
+        b.lineWidth = lineWidth;
+        b.increment = increment;
+        b.width = width;
+        b.height = height;
+        return b;
+      }
+
+      function drawWave(wave){
+        var idx = wave.idx;
+        var width = wave.width;
+        var height = wave.height;
+
+        var ctx = wave.buffer.getContext('2d');
+        ctx.clearRect(0,0,width,height);
+
+        ctx.strokeStyle = wave.color;
+        ctx.lineWidth = wave.lineWidth;
+
+        var phase = wave.phase * Math.PI / 180;
+        var amp = (wave.height * wave.amplitude) / (2 * 100) - 2;
+        var freq = 2 * Math.PI * (1 / (wave.wavelength * WAVELENGTH_MAGNIFY));
+        var yOrigin = wave.height / 2;
+
+        ctx.beginPath();
+        for ( var i = 0; i < wave.width; i++) {
+          var y1 = amp * Math.sin(phase + freq * i) + yOrigin;
+          var y2 = amp * Math.sin(phase + freq * (i + 1)) + yOrigin;
+          ctx.moveTo(i, y1);
+          ctx.lineTo(i + 1, y2);
+        }
+        ctx.stroke();
+
+        var front_ctx = wave.canvas.getContext("2d");
+        front_ctx.clearRect(0, 0, wave.width, wave.height);
+        front_ctx.drawImage(wave.buffer, 0, 0);
+
+      }
+
+      function drawSum(wavesum, wave_a, wave_b){
+        var idx = wavesum.idx;
+        var width = wavesum.width;
+        var height = wavesum.height;
+
+        var ctx = wavesum.buffer.getContext('2d');
+        ctx.clearRect(0,0,width,height);
+
+        ctx.strokeStyle = wavesum.color;
+        ctx.lineWidth = wavesum.lineWidth;
+
+        var phase1 = wave_a.phase * Math.PI / 180;
+        var phase2 = wave_b.phase * Math.PI / 180;
+        var amp1 = (wave_a.height * wave_a.amplitude) / (2 * 100) - 2;
+        var amp2 = (wave_b.height * wave_b.amplitude) / (2 * 100) - 2;
+        var freq1 = 2 * Math.PI * (1 / (wave_a.wavelength * WAVELENGTH_MAGNIFY));
+        var freq2 = 2 * Math.PI * (1 / (wave_b.wavelength * WAVELENGTH_MAGNIFY));
+        var yOrigin = wavesum.height / 2;
+
+        ctx.beginPath();
+        for ( var i = 0; i < width; i++) {
+          var y1_1 = amp1 * Math.sin(phase1 + freq1 * i);
+          var y1_2 = amp1 * Math.sin(phase1 + freq1 * (i + 1));
+
+          var y2_1 = amp2 * Math.sin(phase2 + freq2 * i);
+          var y2_2 = amp2 * Math.sin(phase2 + freq2 * (i + 1));
+
+          ctx.moveTo(i, y1_1 + y2_1 + yOrigin);
+          ctx.lineTo(i + 1, y1_2 + y2_2 + yOrigin);
+        }
+        ctx.stroke();
+
+        var front_ctx = wavesum.canvas.getContext("2d");
+        front_ctx.clearRect(0, 0, width, height);
+        front_ctx.drawImage(wavesum.buffer, 0, 0);
+      }
+      
+      function drawBackground(bgr){
+       	var idx = bgr.idx;
+        var width = bgr.width;
+        var height = bgr.height;
+        
+        var canvas = document.getElementById('canvas-'+idx+'-bg');
+        var ctx = canvas.getContext('2d');
+        
+        ctx.fillStyle = bgr.bgColor;
+        ctx.fillRect(0,0,width,height);
+        
+        ctx.strokeStyle = bgr.lineColor;
+        ctx.strokeWidth = bgr.lineWidth;
+        var increment = bgr.increment;
+        
+        for(var i = 0; i < height/increment; i++){
+          ctx.moveTo(0,i*increment);
+          ctx.lineTo(width,i*increment);
+        }
+        
+        for(var i = 0; i < width/increment; i++){
+          ctx.moveTo(i*increment,0);
+          ctx.lineTo(i*increment,height);
+        }
+
+        ctx.stroke();
+        
+      }
+    </script>
+  </BODY>
+</html>      

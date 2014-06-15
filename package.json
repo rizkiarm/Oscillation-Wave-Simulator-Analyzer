@@ -1,12 +1,30 @@
 {
-  "name": "Project Wave",
-  "description": "Wave simulation and analysis.",
-  "version": "0.0.1",
-  "main": "index.html",
-  "window": {
-    "toolbar": false,
-  	"width": 1024,
-  	"height": 600,
-  	"resizable": false
-  }
+    "name": "Project Wave", 
+    "nodejs": true, 
+    "single-instance": true, 
+    "keywords": [], 
+    "window": {
+        "fullscreen": false, 
+        "resizable": false, 
+        "title": "Oscillation Wave Simulation & Analysis", 
+        "always-on-top": false, 
+        "frame": true, 
+        "visible": true, 
+        "height": 600, 
+        "width": 1024, 
+        "as_desktop": false, 
+        "position": "", 
+        "show_in_taskbar": true, 
+        "toolbar": false, 
+        "icon": ""
+    }, 
+    "version": "0.0.1", 
+    "node-main": "", 
+    "webkit": {
+        "page-cache": false, 
+        "java": false, 
+        "plugin": false
+    }, 
+    "main": "index.html", 
+    "description": "Wave simulation and analysis."
 }

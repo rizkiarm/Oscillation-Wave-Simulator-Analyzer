@@ -1,0 +1,12 @@
+{
+  "name": "Project Wave",
+  "description": "Wave simulation and analysis.",
+  "version": "0.0.1",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+  	"width": 1024,
+  	"height": 600,
+  	"resizable": false
+  }
+}

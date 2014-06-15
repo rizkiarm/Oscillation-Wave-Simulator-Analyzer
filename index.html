@@ -1,69 +1,495 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic' rel='stylesheet' type='text/css'/>
+    <link href="./vendor/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="./vendor/css/jquery-ui-1.10.4.min.css" rel="stylesheet"/>
+
+    <script src="./vendor/js/jquery-1.11.0.min.js"></script>
+    <script src="./vendor/js/jquery-ui-1.10.4.min.js"></script>
+
     <style>
       * {
         margin: 0px;
         padding: 0px;
       }
+
+      h1, h2, h3, h4, h5, p, a {
+        font-family: 'Roboto', sans-serif;
+      }
+
+      a {
+        cursor: pointer;
+      }
+
+      a:hover {
+        color: #bdc3c7;
+      }
+
+      .container {
+        width: 1024px;
+        height: 600px;
+        overflow: hidden;
+      }
+
+      .slideright {
+        left: 300px !important;
+      }
+
       .canvas-area {
         position: relative;
+        width: 1024px;
+        height: 600px;
+        overflow: hidden;
+        top: 0px;
+        left:0px;
+
+        box-shadow: rgba(0, 0, 0, 0.37) -2px 0px 100px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+      }
+      .header {
+        width: 100%;
+        position: absolute;
+        z-index: 1;
+        padding-top:13px;
+      }
+      .header h1 {
+        position: relative;
+        font-family: 'Roboto', sans-serif;
+        color: #ecf0f1;
+        font-weight: 200;
+      }
+      .header h1 > small {
+        font-size: 0.7em;
+        margin-left: 10px;
+      }
+      .title {
+        margin-left: 20px;
+        margin-right: 20px;
       }
       #canvas-1-wave {
         position: absolute;
+        top:64px;
+        left: 0px;
+      }
+      #canvas-1-bg {
+        position: absolute;
         top:0px;
+        left: 0px;
+      }
+
+      .control-slider.horizontal {
+        height: 5px;
+      }
+      .control-slider.vertical {
+        width: 5px;
+      }
+      .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+        width: 13px;
+        height: 13px;
+      }
+
+      #slider_1_2 {
+        top: 163px;
+        left: 25px;
+        height:200px;
+      }
+      #slider_1_1 {
+        top: 300px;
+        left: 30px;
+        width:200px;
+      }
+      #slider_1_3 {
+        top: 320px;
+        left: 30px;
+        width:200px;
+      }
+      #slider_1_4 {
+        top: 340px;
+        left: 30px;
+        width:200px;
+      }
+
+      .controller > .control-slider > .symbol {
+        position: absolute;
+        color: #ecf0f1;
+      }
+      .controller > .control-slider.vertical > .symbol {
+        top: -25px;
+        left: -3px;
+      }
+      .controller > .control-slider.horizontal > .symbol {
+        top: -8px;
+        right: -20px;
+      }
+
+      .information {
+        background: rgba(0, 0, 0, 0.3);
+        border: rgba(0, 0, 0, 0.22) solid 1px;
+        font-family: roboto;
+        font-weight: 300;
+        width: 150px;
+        height: 150px;
+        color: #fff;
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+        padding: 10px 30px;
+        border-radius: 3px;
+      }
+
+      .information ul {
+        list-style: none;
+      }
+
+      .information.interference {
+        width: 150px;
+        height: 150px;
+        bottom: 32px;
+        right: 30px;
+      }
+
+
+
+      #canvas-2_3-wavesum {
+        position: absolute;
+        top:64px;
         left: 0px;
       }
       #canvas-2-wave {
         position: absolute;
-        top:0px;
-        left: 0px;
+        bottom:90px;
+        left: 60px;
       }
-      #canvas-1_2-wave {
+      #canvas-3-wave {
+        position: absolute;
+        bottom:90px;
+        left: 420px;
+      }
+      #canvas-2-bg {
         position: absolute;
         top:0px;
         left: 0px;
       }
+
+      .small-canvas {
+        border: rgba(255, 255, 255, 0.46) solid 1px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.17);
+      }
+
+      #slider_2_2 {
+        position: absolute;
+        left: 45px;
+        bottom: 90px;
+      }
+      #slider_2_1 {
+        position: absolute;
+        left: 60px;
+        bottom: 74px;
+        width: 300px;
+      }
+      #slider_2_3 {
+        position: absolute;
+        left: 60px;
+        bottom: 57px;
+        width: 300px;
+      }
+      #slider_2_4 {
+        position: absolute;
+        left: 60px;
+        bottom: 40px;
+        width: 300px;
+      }
+
+      #slider_3_2 {
+        position: absolute;
+        left: 405px;
+        bottom: 90px;
+      }
+      #slider_3_1 {
+        position: absolute;
+        left: 420px;
+        bottom: 74px;
+        width: 300px;
+      }
+      #slider_3_3 {
+        position: absolute;
+        left: 420px;
+        bottom: 57px;
+        width: 300px;
+      }
+      #slider_3_4 {
+        position: absolute;
+        left: 420px;
+        bottom: 40px;
+        width: 300px;
+      }
+
+      .controller.small .ui-state-default,.controller.small .ui-widget-content .ui-state-default,.controller.small .ui-widget-header .ui-state-default {
+        width: 10px;
+        height: 10px;
+      }
+      .controller.small .control-slider.horizontal {
+        height: 2px;
+      }
+      .controller.small .control-slider.vertical {
+        width: 2px;
+      }
+
+      .menu {
+        padding: 10px;
+        position: fixed;
+        width: 280px;
+        height: 580px;
+        background: #34495e;
+      }
+      .menu h1,.menu h3, .menu p {
+        color: #fff;
+        font-weight: 100;
+      }
+      .menu a {
+        color: #fff;
+        font-weight: 100;
+      }
+      .menu > ul.menu-list {
+        list-style: none;
+      }
+      .menu > ul.menu-list > li {
+        background: none;
+        padding: 5px 10px;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+      }
+      .menu > ul.menu-list > li:hover {
+        background: #ecf0f1;
+        padding: 10px 10px;
+      }
+      .menu > ul.menu-list > li:hover a {
+        color: #34495e;
+      }
+
+      .about.content {
+        margin-top: 100px;
+        margin-left: 50px; 
+      }
+      .about.content h1,h2,h3,h4,h5,p{
+        color: #fff;
+        font-weight: 100;
+      }
+
+      .formula {
+        z-index: 1;
+        position: absolute;
+        margin-left: 50%;
+        bottom: 35px;
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.17);
+        border: rgba(255, 255, 255, 0.22) solid 1px;
+        padding: 10px 25px;
+      }
+      .formula h1 {
+        color: #FFF;
+        font-weight: 300;
+        font-size: 1.9em;
+      }
+
+      .controller.small .control-slider span {
+        position: absolute;
+        font-size: 0.6em;
+      }
+
+      .controller.small .control-slider.vertical span {
+        top: 5px;
+        left: 18px;
+      }
+      .controller.small .control-slider.horizontal span {
+        top: 0px;
+        right: 333px;
+      }
     </style>
+
+    <title>Project Wave</title>
   </head> 
   <BODY>
-    <div class="canvas-area">
-      <canvas id="canvas-1-bg" width="578" height="200"></canvas>
-      <canvas id="canvas-1-wave" width="578" height="200"></canvas>
+    <div class="container">
+
+      <div class="menu">
+        <p style="font-size: 150px;"><i class="fa fa-jsfiddle"></i></p>
+        <h1>Oscillation Wave</h1>
+        <h3>Simulator & Analyzer</h3>
+        <br />
+        <br />
+        <ul class="menu-list">
+          <li><a id="single_page">SINGLE WAVE MODE</a></li>
+          <li><a id="inter_page">INTERFERENCE / SUPERPOSITION</a></li>
+          <li><a id="about_page">ABOUT</a></li>
+        </ul>
+        <div style="position:absolute;bottom:20px;"><p>version 0.0.1</p></div>
+      </div>
+
+      <div class="canvas-area">
+        <div class="header">
+          <div class="title">
+            <div style="float:left"><h1><a class="trigger-menu"><i class="fa fa-bars"></i></a> SINGLE WAVE MODE<small>WAVE 001</small></h1></div>
+            <div style="float:right"><h1><a class="playpause"><i class="fa fa-pause"></i></a></h1></div>
+            <div style="clear:both"></div>
+          </div>
+        </div>
+        <canvas id="canvas-1-bg" width="1024" height="600"></canvas>
+        <canvas id="canvas-1-wave" width="1024" height="400"></canvas>
+        <div class="controller">
+          <div id="slider_1_2" class="control-slider vertical"><div class="symbol">A</div></div>
+          <div id="slider_1_1" class="control-slider horizontal"><div class="symbol">&lambda;</div></div>
+          <div id="slider_1_3" class="control-slider horizontal"><div class="symbol">&#632;</div></div>
+          <div id="slider_1_4" class="control-slider horizontal"><div class="symbol">v</div></div>
+        </div>
+        <div class="formula">
+          <h1 id="formula_1">y = A sin (kx + wt + o)</h1>
+        </div>
+        <div class="information">
+          <div style="display:inline-block;text-align:center;margin-left: -15px;">
+            <ul>
+              <li class="amplitudo">A</li>
+              <li class="lambda">&lambda;</li>
+              <li class="phase">&#632;</li>
+              <li class="speed">v</li>
+              <li class="speed">f</li>
+              <li class="speed">T</li>
+              <li class="speed">&#969;</li>
+            </ul>
+          </div>
+          <div style="display:inline-block;">
+            <ul>
+              <li class="amplitudo">: <span id="value_1_2"></span> length unit</li>
+              <li class="lambda">: <span id="value_1_1"></span> length unit</li>
+              <li class="phase">: <span id="value_1_3"></span> degree</li>
+              <li class="speed">: <span id="value_1_4"></span> speed unit</li>
+              <li class="speed">: <span id="value_1_5"></span> Hz</li>
+              <li class="speed">: <span id="value_1_6"></span> time unit</li>
+              <li class="speed">: <span id="value_1_7"></span> rad/s</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="canvas-area">
+        <div class="header">
+          <div class="title">
+            <div style="float:left"><h1><a class="trigger-menu"><i class="fa fa-bars"></i></a> INTERFERENCE / SUPERPOSITION<small>WAVE 002 + WAVE 003</small></h1></div>
+            <div style="float:right"><h1><a class="playpause"><i class="fa fa-pause"></i></a></h1></div>
+            <div style="clear:both"></div>
+          </div>
+        </div>
+        <canvas id="canvas-2-bg" width="1024" height="600"></canvas>
+        <canvas id="canvas-2_3-wavesum" width="1024" height="400"></canvas>
+        <canvas class="small-canvas" id="canvas-2-wave" width="300" height="100"></canvas>
+        <canvas class="small-canvas" id="canvas-3-wave" width="300" height="100"></canvas>
+        <div class="controller small">
+          <div id="slider_2_2" class="control-slider vertical"><div class="symbol">A <span id="value_2_2"></span></div></div>
+          <div id="slider_2_1" class="control-slider horizontal"><div class="symbol">&lambda; <span id="value_2_1"></span></div></div>
+          <div id="slider_2_3" class="control-slider horizontal"><div class="symbol">&#632; <span id="value_2_3"></span></div></div>
+          <div id="slider_2_4" class="control-slider horizontal"><div class="symbol">v <span id="value_2_4"></span></div></div>
+        </div>
+        <div class="controller small">
+          <div id="slider_3_2" class="control-slider vertical"><div class="symbol">A <span id="value_3_2"></span></div></div>
+          <div id="slider_3_1" class="control-slider horizontal"><div class="symbol">&lambda; <span id="value_3_1"></span></div></div>
+          <div id="slider_3_3" class="control-slider horizontal"><div class="symbol">&#632; <span id="value_3_3"></span></div></div>
+          <div id="slider_3_4" class="control-slider horizontal"><div class="symbol">v <span id="value_3_4"></span></div></div>
+        </div>
+        <div class="information interference">
+          <div style="display:inline-block;text-align:center;margin-left: -15px;">
+            <ul>
+              <li class="amplitudo">A</li>
+              <li class="lambda">&lambda;</li>
+              <li class="phase">&#632;</li>
+              <li class="speed">v</li>
+              <li class="speed">f</li>
+              <li class="speed">T</li>
+              <li class="speed">&#969;</li>
+            </ul>
+          </div>
+          <div style="display:inline-block;">
+            <ul>
+              <li class="amplitudo">: <span id="value_2_3_2"></span> length unit</li>
+              <li class="lambda">: <span id="value_2_3_1"></span> length unit</li>
+              <li class="phase">: <span id="value_2_3_3"></span> degree</li>
+              <li class="speed">: <span id="value_2_3_4"></span> speed unit</li>
+              <li class="speed">: <span id="value_2_3_5"></span> Hz</li>
+              <li class="speed">: <span id="value_2_3_6"></span> time unit</li>
+              <li class="speed">: <span id="value_2_3_7"></span> rad/s</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="canvas-area" style="background:#34495e;">
+        <div class="header">
+          <div class="title">
+            <div style="float:left"><h1><a class="trigger-menu"><i class="fa fa-bars"></i></a> ABOUT<small>PROGRAM 001</small></h1></div>
+            <div style="float:right"><h1><i class="fa fa-code"></i></h1></div>
+            <div style="clear:both"></div>
+          </div>
+        </div>
+        <div class="about content">
+          <h3>PROGRAMMER & DESIGNER</h3>
+          <h1>Muhammad Rizki A.R.M</h1>
+          <br />
+          <br />
+          <h3>LOGIC & FORMULA ANALYSIS</h3>
+          <h1>Ammar Fathin Sabili</h1>
+          <br />
+          <br />
+          <h3>PAPER & DOCUMENTATION</h3>
+          <h1>Ferdinand Antonius</h1>
+          <h1>Kemas Muhammad Ramadhan</h1>
+          <h1>Luthfi Kurnia Putra</h1>
+        </div>
+      </div>
     </div>
-    <div class="canvas-area">
-      <canvas id="canvas-2-bg" width="578" height="200"></canvas>
-      <canvas id="canvas-2-wave" width="578" height="200"></canvas>
-    </div>
-    <div class="canvas-area">
-      <canvas id="canvas-1_2-bg" width="578" height="200"></canvas>
-      <canvas id="canvas-1_2-wave" width="578" height="200"></canvas>
-    </div>
+
     <script>
-      var wave1,wave2,wave1_2;
+      var page;
+      var wave, wavesum, bg = [], waveinfo = [], waveformula = [];
 	    var wavelengthRange, amplitudeRange, phaseRange, speedRange;
 	    var WAVELENGTH_MAGNIFY = 5;
-	    var timer, animateBtn;
+	    var time, timer, animateBtn;
       
       init();
       function init(){
-      	var bg1 = new background(1,'#2980b9','#3498db',.3,12,578,200);
-        drawBackground(bg1);
+        page = 'single_page';
 
-        wave1 = new wave(1, 30, 90, 4, 0, 3, '#ecf0f1', 578, 200);
-        drawWave(wave1);
+        wavelengthRange = new range(1,100);
+        amplitudeRange = new range(0,100);
+        phaseRange = new range(0,360);
+        speedRange = new range(-50,50);
+        time = 0;
 
-        var bg2 = new background(2,'#2980b9','#3498db',.3,12,578,200);
-        drawBackground(bg2);
+        wave[0] = new wave(1, 60, 50, 4, 0, 3, '#ecf0f1', 1024, 400);
+        bg[0] = new background(1,'#2980b9','#3498db',.3,12,1024,600);
+        waveControls(wave[0]);
+        waveinfo[0] = wave[0];
+        waveformula[0] = wave[0];
 
-        wave2 = new wave(2, 40, 50, -10, 0, 3, '#ecf0f1', 578, 200);
-        drawWave(wave2);
 
-        var bg1_2 = new background('1_2','#2980b9','#3498db',.3,12,578,200);
-        drawBackground(bg1_2);
+        wave[1] = new wave(2, 30, 90, 4, 10, 3, '#ecf0f1', 300, 100);
+        wave[2] = new wave(3, 40, 50, -10, 40, 3, '#ecf0f1', 300, 100);
+        wavesum[0] = new wavesum('2_3', wave[1], wave[2], 3, '#ecf0f1', 1024, 400);
+        bg[1] = new background(2,'#2980b9','#3498db',.3,12,1024,600);
+        waveControls(wave[1]);
+        waveControls(wave[2]);
+        waveinfo[1] = wavesum[0];
+        waveinfo[2] = wave[1];
+        waveinfo[3] = wave[2];
 
-        wave1_2 = new wave('1_2', 0, 0, 0, 0, 3, '#ecf0f1', 578, 200);
-        drawSum(wave1_2,wave1,wave2);
+        for(i in bg) drawBackground(bg[i]);
 
         animateStart();
       }
@@ -75,14 +501,110 @@
         return r;
       }
 
+      function getAntiNode(wave){
+        var wavelength = wave.wavelength;
+        var speed = wave.speed;
+        var freq = Math.abs(speed / wavelength);
+        return (1 - derivan(time / WAVELENGTH_MAGNIFY * freq + 0.75)) * wavelength * WAVELENGTH_MAGNIFY;
+      }
+
+      function derivan(number){
+        number = Math.abs(number); 
+        return number - parseInt(number);
+      }
+
+      function waveFormula(wave){
+        var idx = wave.idx;
+        if(typeof wave.wave_a === "undefined"){
+          var k = Math.round((2 * Math.PI / wave.wavelength) * 100) / 100;
+          var wavelength = wave.wavelength;
+          var speed = wave.speed;
+          var amplitude = wave.amplitude;
+          var phase = wave.phase;
+        } else {
+          var k1 = 2 * Math.PI / wave.wave_a.wavelength;
+          var k2 = 2 * Math.PI / wave.wave_b.wavelength;
+          var k = Math.round(((1/2 * (k1 + k2)) * 100) / 100);
+          var wavelength = Math.round((2 * Math.PI / ((1/2) * (k1 + k2))) * 100) / 100;
+          var speed = Math.round((wave.wave_a.speed + wave.wave_b.speed) * 100) / 100;
+          var phase = Math.abs(Math.round((wave.wave_a.phase - wave.wave_b.phase) * 100) / 100);
+          var amplitude = (wave.wave_a.speed != wave.wave_b.speed) ? (wave.wave_a.amplitude + wave.wave_b.amplitude) : Math.round((Math.sqrt(wave.wave_a.amplitude*wave.wave_a.amplitude + wave.wave_b.amplitude*wave.wave_b.amplitude + 2*wave.wave_a.amplitude*wave.wave_b.amplitude*Math.cos(phase*Math.PI/180))) * 100) / 100;
+        }
+        var freq = Math.abs(Math.round((speed / wavelength) * 100) / 100);
+        var omega = Math.round((2 * Math.PI * freq) * 100) / 100;
+        phase = Math.round(phase * Math.PI / 180 * 100) / 100;
+        document.getElementById("formula_" + idx).innerHTML = 'y = '+amplitude+' sin ('+k+'x + '+omega+'t + '+phase+')';
+      }
+
+      function waveInformation(wave){
+        var idx = wave.idx;
+        if(typeof wave.wave_a === "undefined"){
+          var wavelength = wave.wavelength;
+          var speed = wave.speed;
+          var amplitude = wave.amplitude;
+          var phase = wave.phase;
+        } else {
+          var k1 = 2 * Math.PI / wave.wave_a.wavelength;
+          var k2 = 2 * Math.PI / wave.wave_b.wavelength;
+          var wavelength = Math.round((2 * Math.PI / ((1/2) * (k1 + k2))) * 100) / 100;
+          var speed = Math.round((wave.wave_a.speed + wave.wave_b.speed) * 100) / 100;
+          var phase = Math.abs(Math.round((wave.wave_a.phase - wave.wave_b.phase) * 100) / 100);
+          var amplitude = Math.round(wave.amplitude * 100) / 100;
+        }
+        var freq = Math.abs(Math.round((speed / wavelength) * 100) / 100);
+        var T = Math.round((1/freq) * 100) / 100;
+        var omega = Math.round((2 * Math.PI * freq) * 100) / 100;
+
+        document.getElementById("value_" + idx + "_1").innerHTML = wavelength;
+        document.getElementById("value_" + idx + "_2").innerHTML = amplitude;
+        document.getElementById("value_" + idx + "_3").innerHTML = phase;
+        document.getElementById("value_" + idx + "_4").innerHTML = speed;
+        if(document.getElementById("value_" + idx + "_5") != null){
+          document.getElementById("value_" + idx + "_5").innerHTML = freq;
+          document.getElementById("value_" + idx + "_6").innerHTML = T;
+          document.getElementById("value_" + idx + "_7").innerHTML = omega;
+        }
+      }
+
+      function waveControls(wave) {
+        slider(wave, 1, wavelengthRange, 'horizontal', wave.wavelength);
+        slider(wave, 2, amplitudeRange, 'vertical', wave.amplitude);
+        slider(wave, 3, phaseRange, 'horizontal', wave.phase);
+        slider(wave, 4, speedRange, 'horizontal', wave.speed);
+      }
+
+      function slider(wave, i, range, orientation, val){
+        var idx = "" + wave.idx +"_"+ i;
+        $("#slider_" + idx).slider({
+          orientation: orientation,
+          range : "min",
+          min : range.min,
+          max : range.max,
+          value : val,
+          animate : true,
+          slide : function(event, ui) {
+            adjustWave(wave, i, ui.value);
+          }
+        });
+      }
+
+      function adjustWave(wave, i, val) {
+        if (i == 1) wave.wavelength = val;
+        else if (i == 2) wave.amplitude = val;
+        else if (i == 3) wave.phase = val;
+        else if (i == 4) wave.speed = val;
+      }
+
       function animateStart() {
         timer = setInterval(function() {
-          wave1.phase += wave1.speed;
-          wave2.phase += wave2.speed;
-          drawWave(wave1);
-          drawWave(wave2);
-          drawSum(wave1_2,wave1,wave2);
-        }, 1000 / 25);
+          for(i in wave) drawWave(wave[i]);
+          for(i in wavesum) drawSum(wavesum[i]);
+          if(time & 1){
+            for(i in waveinfo) waveInformation(waveinfo[i]);
+            for(i in waveformula) waveFormula(waveformula[i]);
+          }
+          time++;
+        }, 1000 / 20);
       }
 
       function animateStop() {
@@ -103,6 +625,27 @@
         w.height = height;
         
         w.canvas = document.getElementById('canvas-'+idx+'-wave');
+        w.buffer = document.createElement('canvas');
+        w.buffer.width = w.width;
+        w.buffer.height = w.height;
+        
+        return w;
+      }
+
+      function wavesum(idx, wave_a, wave_b, lineWidth, color, width, height){
+        var w = new Object();
+        w.idx = idx;
+        w.lineWidth = lineWidth;
+        w.color = color;
+        w.width = width;
+        w.height = height;
+
+        w.wave_a = wave_a;
+        w.wave_b = wave_b;
+
+        w.amplitude = 0;
+        
+        w.canvas = document.getElementById('canvas-'+idx+'-wavesum');
         w.buffer = document.createElement('canvas');
         w.buffer.width = w.width;
         w.buffer.height = w.height;
@@ -130,15 +673,22 @@
         var ctx = wave.buffer.getContext('2d');
         ctx.clearRect(0,0,width,height);
 
-        ctx.strokeStyle = wave.color;
         ctx.lineWidth = wave.lineWidth;
 
-        var phase = wave.phase * Math.PI / 180;
-        var amp = (wave.height * wave.amplitude) / (2 * 100) - 2;
+        var phase = (wave.phase + time*wave.speed) * Math.PI / 180;
+        var amp = (wave.height * wave.amplitude) / (2 * 100);
         var freq = 2 * Math.PI * (1 / (wave.wavelength * WAVELENGTH_MAGNIFY));
         var yOrigin = wave.height / 2;
 
         ctx.beginPath();
+        var line_color = 'rgba('+hexToRgb(wave.color).r+','+hexToRgb(wave.color).g+','+hexToRgb(wave.color).b+','+0.2+')';
+        ctx.strokeStyle = line_color;
+        ctx.moveTo(0, height/2);
+        ctx.lineTo(width, height/2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = wave.color;
         for ( var i = 0; i < wave.width; i++) {
           var y1 = amp * Math.sin(phase + freq * i) + yOrigin;
           var y2 = amp * Math.sin(phase + freq * (i + 1)) + yOrigin;
@@ -153,7 +703,7 @@
 
       }
 
-      function drawSum(wavesum, wave_a, wave_b){
+      function drawSum(wavesum){
         var idx = wavesum.idx;
         var width = wavesum.width;
         var height = wavesum.height;
@@ -161,18 +711,31 @@
         var ctx = wavesum.buffer.getContext('2d');
         ctx.clearRect(0,0,width,height);
 
-        ctx.strokeStyle = wavesum.color;
         ctx.lineWidth = wavesum.lineWidth;
 
-        var phase1 = wave_a.phase * Math.PI / 180;
-        var phase2 = wave_b.phase * Math.PI / 180;
-        var amp1 = (wave_a.height * wave_a.amplitude) / (2 * 100) - 2;
-        var amp2 = (wave_b.height * wave_b.amplitude) / (2 * 100) - 2;
+        var wave_a = wavesum.wave_a;
+        var wave_b = wavesum.wave_b;
+
+        var wave_a_color = 'rgba('+hexToRgb(wave_a.color).r+','+hexToRgb(wave_a.color).g+','+hexToRgb(wave_a.color).b+','+0.3+')';
+        var wave_b_color = 'rgba('+hexToRgb(wave_b.color).r+','+hexToRgb(wave_a.color).g+','+hexToRgb(wave_a.color).b+','+0.2+')';
+
+        var phase1 = (wave_a.phase + time*wave_a.speed) * Math.PI / 180;
+        var phase2 = (wave_b.phase + time*wave_b.speed) * Math.PI / 180;
+        var amp1 = (wave_a.height * wave_a.amplitude) / (2 * 100);
+        var amp2 = (wave_b.height * wave_b.amplitude) / (2 * 100);
         var freq1 = 2 * Math.PI * (1 / (wave_a.wavelength * WAVELENGTH_MAGNIFY));
         var freq2 = 2 * Math.PI * (1 / (wave_b.wavelength * WAVELENGTH_MAGNIFY));
-        var yOrigin = wavesum.height / 2;
+        var yOrigin = height / 2;
 
         ctx.beginPath();
+        var line_color = 'rgba('+hexToRgb(wavesum.color).r+','+hexToRgb(wavesum.color).g+','+hexToRgb(wavesum.color).b+','+0.2+')';
+        ctx.strokeStyle = line_color;
+        ctx.moveTo(0, height/2);
+        ctx.lineTo(width, height/2);
+        ctx.stroke();
+
+        var amplitude_max = 0;
+
         for ( var i = 0; i < width; i++) {
           var y1_1 = amp1 * Math.sin(phase1 + freq1 * i);
           var y1_2 = amp1 * Math.sin(phase1 + freq1 * (i + 1));
@@ -180,10 +743,29 @@
           var y2_1 = amp2 * Math.sin(phase2 + freq2 * i);
           var y2_2 = amp2 * Math.sin(phase2 + freq2 * (i + 1));
 
+          ctx.strokeStyle = wave_a_color;
+          ctx.beginPath();
+          ctx.moveTo(i, y2_1 + yOrigin);
+          ctx.lineTo(i + 1, y2_2 + yOrigin);
+          ctx.stroke();
+
+          ctx.strokeStyle = wave_b_color;
+          ctx.beginPath();
+          ctx.moveTo(i, y1_1 + yOrigin);
+          ctx.lineTo(i + 1, y1_2 + yOrigin);
+          ctx.stroke();
+
+          ctx.strokeStyle = wavesum.color;
+          ctx.beginPath();
           ctx.moveTo(i, y1_1 + y2_1 + yOrigin);
           ctx.lineTo(i + 1, y1_2 + y2_2 + yOrigin);
+          ctx.stroke();
+
+          if(wave_a.wavelength == wave_b.wavelength) amplitude_max = 2*(y1_1 + y2_1) > amplitude_max ? 2*(y1_1 + y2_1) : amplitude_max;
         }
-        ctx.stroke();
+        if(wave_a.wavelength != wave_b.wavelength) amplitude_max = wave_a.amplitude + wave_b.amplitude;
+
+        wavesum.amplitude = amplitude_max;
 
         var front_ctx = wavesum.canvas.getContext("2d");
         front_ctx.clearRect(0, 0, width, height);
@@ -217,6 +799,44 @@
 
         ctx.stroke();
         
+      }
+
+      $('ul.menu-list > li > a').click(function(){
+        var id = $(this).attr('id');
+        if(id == 'single_page') $('.canvas-area').css('top',0);
+        if(id == 'inter_page') $('.canvas-area').css('top',-600);
+        if(id == 'about_page') $('.canvas-area').css('top',-1200);
+        setTimeout(function(){ $('.canvas-area').removeClass('slideright'); }, 500);
+      });
+
+      $('.playpause').click(function(){
+        if($('.playpause').html().indexOf('play') != -1){
+          $('.playpause').html('<i class="fa fa-pause"></i>');
+          animateStart();
+        } else {
+          $('.playpause').html('<i class="fa fa-play"></i>');
+          animateStop();
+        }
+      });
+
+      $('.trigger-menu').click(function(){
+        if($('.canvas-area').hasClass('slideright')) $('.canvas-area').removeClass('slideright');
+        else $('.canvas-area').addClass('slideright');
+      });
+
+      function hexToRgb(hex) {
+        // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+        var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+          return r + r + g + g + b + b;
+        });
+
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16)
+        } : null;
       }
     </script>
   </BODY>

@@ -20,6 +20,7 @@
         <ul class="menu-list">
           <li><a id="single_page">SINGLE WAVE MODE</a></li>
           <li><a id="inter_page">INTERFERENCE / SUPERPOSITION</a></li>
+          <li><a id="ocean_page">OCEAN WAVE SIMULATION</a></li>
           <li><a id="about_page">ABOUT</a></li>
         </ul>
         <div style="position:absolute;bottom:20px;"><p>version 0.0.1</p></div>
@@ -115,6 +116,48 @@
               <li class="speed">: <span id="value_2_3_5"></span> Hz</li>
               <li class="speed">: <span id="value_2_3_6"></span> time unit</li>
               <li class="speed">: <span id="value_2_3_7"></span> rad/s</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="canvas-area ocean">
+        <div class="header">
+          <div class="title">
+            <div style="float:left"><h1><a class="trigger-menu"><i class="fa fa-bars"></i></a> OCEAN WAVE<small>SIMULATION 001</small></h1></div>
+            <div style="float:right"><h1><a class="playpause"><i class="fa fa-pause"></i></a></h1></div>
+            <div style="clear:both"></div>
+          </div>
+        </div>
+        <canvas id="canvas-4-bg" width="1024" height="600"></canvas>
+        <canvas id="canvas-4-oceanwave" width="1024" height="600"></canvas>
+        <div class="darksea"></div>
+        <div class="controller">
+          <div id="slider_4_8" class="control-slider horizontal"><div class="symbol">v<sub>wind</sub></div></div>
+        </div>
+        <div class="information" style="height:180px;width:200px;">
+          <div style="display:inline-block;text-align:center;margin-left: -15px;">
+            <ul>
+              <li class="speed">v<sub>wind</sub></li>
+              <li class="speed">v<sub>drift</sub></li>
+              <li class="amplitudo">A</li>
+              <li class="lambda">&lambda;</li>
+              <li class="speed">v</li>
+              <li class="speed">f</li>
+              <li class="speed">T</li>
+              <li class="speed">&#969;</li>
+            </ul>
+          </div>
+          <div style="display:inline-block;">
+            <ul>
+              <li class="speed">: <span id="value_4_8"></span> speed unit</li>
+              <li class="speed">: <span id="value_4_9"></span> speed unit</li>
+              <li class="amplitudo">: <span id="value_4_2"></span> length unit</li>
+              <li class="lambda">: <span id="value_4_1"></span> length unit</li>
+              <li class="speed">: <span id="value_4_4"></span> speed unit</li>
+              <li class="speed">: <span id="value_4_5"></span> Hz</li>
+              <li class="speed">: <span id="value_4_6"></span> time unit</li>
+              <li class="speed">: <span id="value_4_7"></span> rad/s</li>
             </ul>
           </div>
         </div>

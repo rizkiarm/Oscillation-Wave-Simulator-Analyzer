@@ -170,6 +170,16 @@ a:hover {
   top:0px;
   left: 0px;
 }
+#canvas-4-bg {
+  position: absolute;
+  top:0px;
+  left: 0px;
+}
+#canvas-4-oceanwave {
+  position: absolute;
+  top:0px;
+  left: 0px;
+}
 
 .small-canvas {
   border: rgba(255, 255, 255, 0.46) solid 1px;
@@ -223,6 +233,17 @@ a:hover {
   left: 420px;
   bottom: 40px;
   width: 300px;
+}
+#slider_4_8 {
+  position: absolute;
+  top: 550px;
+  left: 30px;
+  width:200px;
+}
+#slider_4_8 sub {
+  position: absolute;
+  font-size: x-small;
+  top: 7px;
 }
 
 .controller.small .ui-state-default,.controller.small .ui-widget-content .ui-state-default,.controller.small .ui-widget-header .ui-state-default {
@@ -309,4 +330,19 @@ a:hover {
 .controller.small .control-slider.horizontal span {
   top: 0px;
   right: 333px;
+}
+
+.canvas-area.ocean {
+  background: -webkit-linear-gradient(rgb(52, 185, 228), rgb(115, 249, 255), rgb(255, 255, 255), rgb(255, 255, 255));
+  background: -o-linear-gradient(rgb(52, 185, 228), rgb(115, 249, 255), rgb(255, 255, 255), rgb(255, 255, 255));
+  background: -moz-linear-gradient(rgb(52, 185, 228), rgb(115, 249, 255), rgb(255, 255, 255), rgb(255, 255, 255));
+  background: linear-gradient(rgb(52, 185, 228), rgb(115, 249, 255), rgb(255, 255, 255), rgb(255, 255, 255));
+}
+
+.darksea {
+  position: absolute;
+  width: 1024px;
+  top: 350px;
+  height: 250px;
+  background: linear-gradient(rgba(0, 178, 255, 0), rgb(17, 99, 131));
 }

@@ -1,5 +1,5 @@
 {
-    "name": "Project Wave", 
+    "description": "Wave simulation and analysis.", 
     "nodejs": true, 
     "single-instance": true, 
     "keywords": [], 
@@ -9,12 +9,12 @@
         "title": "Oscillation Wave Simulation & Analysis", 
         "always-on-top": false, 
         "frame": true, 
-        "visible": true, 
         "height": 600, 
-        "width": 1024, 
+        "visible": true, 
         "as_desktop": false, 
         "position": "", 
         "show_in_taskbar": true, 
+        "width": 1024, 
         "toolbar": false, 
         "icon": ""
     }, 
@@ -26,5 +26,5 @@
         "plugin": false
     }, 
     "main": "index.html", 
-    "description": "Wave simulation and analysis."
+    "name": "Project Wave"
 }

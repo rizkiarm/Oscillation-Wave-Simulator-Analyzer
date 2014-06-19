@@ -45,6 +45,7 @@
 
     for(i in bg) drawBackground(bg[i]);
 
+    initAll(['single_page','inter_page']);
     animateStart();
   }
   
@@ -147,6 +148,16 @@
     else if (i == 2) wave.amplitude = val;
     else if (i == 3) wave.phase = val;
     else if (i == 4) wave.speed = val;
+  }
+
+  function initAll(arr){
+    for(i in arr){
+      var page = arr[i];
+      if(typeof wave[page] !== "undefined") for(i in wave[page]) if(typeof wave[page][i] !== "undefined") drawWave(wave[page][i]);
+      if(typeof wavesum[page] !== "undefined") for(i in wavesum[page]) if(typeof wavesum[page][i] !== "undefined") drawSum(wavesum[page][i]);
+      if(typeof waveinfo[page] !== "undefined") for(i in waveinfo[page]) if(typeof waveinfo[page][i] !== "undefined") waveInformation(waveinfo[page][i]);
+      if(typeof waveformula[page] !== "undefined") for(i in waveformula[page]) if(typeof waveformula[page][i] !== "undefined") waveFormula(waveformula[page][i]);
+    }
   }
 
   function animateStart() {
@@ -367,7 +378,11 @@
     if(id == 'inter_page') $('.canvas-area').css('top',-600);
     if(id == 'about_page') $('.canvas-area').css('top',-1200);
     page = id;
+
+    var current_state = paused[page];
+    paused[page] = true;
     setTimeout(function(){ $('.canvas-area').removeClass('slideright'); }, 500);
+    setTimeout(function(){ paused[page] = current_state; }, 1000);
   });
 
   $('.playpause').click(function(){
@@ -388,8 +403,11 @@
   });
 
   $('.trigger-menu').click(function(){
+    var current_state = paused[page];
+    paused[page] = true;
     if($('.canvas-area').hasClass('slideright')) $('.canvas-area').removeClass('slideright');
     else $('.canvas-area').addClass('slideright');
+    setTimeout(function(){ paused[page] = current_state; }, 500);
   });
 
   function hexToRgb(hex) {

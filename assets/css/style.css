@@ -10,8 +10,9 @@
   user-select: none;
 }
 
-h1, h2, h3, h4, h5, p, a {
+h1, h2, h3, h4, h5, p, a, span, sub, li, div {
   font-family: 'Roboto', sans-serif;
+  cursor:default;
 }
 
 a {
@@ -345,4 +346,9 @@ a:hover {
   top: 350px;
   height: 250px;
   background: linear-gradient(rgba(0, 178, 255, 0), rgb(17, 99, 131));
+}
+
+.logo {
+  width: 170px;
+  margin-top: 20px;
 }

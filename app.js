@@ -48,7 +48,7 @@
     waveinfo['inter_page'][3] = wave['inter_page'][1];
 
     oceanwave['ocean_page'] = [];
-    oceanwave['ocean_page'][0] = new oceanwave(4, 120, 30, 5, 0, 0, new ball(1,'#C19264','#f9ba3e',100,15), 3, '#fff', '#00b2ff', 1024, 600);
+    oceanwave['ocean_page'][0] = new oceanwave(4, 120, 30, 5, 0, 28, new box(1,'#C19264','#f9ba3e',100,15), 3, '#fff', '#00b2ff', 1024, 600);
     waveControls(oceanwave['ocean_page'][0]);
     oceanwaveinfo['ocean_page'] = [];
     oceanwaveinfo['ocean_page'][0] = oceanwave['ocean_page'][0];
@@ -148,7 +148,7 @@
     var width = oceanwave.width;
     var height = oceanwave.height;
 
-    var ball = oceanwave.ball;
+    var box = oceanwave.box;
     var windSpeed = -oceanwave.windSpeed / 2;
     var xi = Math.max(10, GRAVITATION * time_l / Math.max(Math.abs(windSpeed / 10000),0.0001));
     var amp = (oceanwave.height * (windSpeed * windSpeed * h(xi) / GRAVITATION)) / (2 * 100) - 2;
@@ -159,10 +159,10 @@
     var lambda = 2 * Math.PI * GRAVITATION / (omega * omega);
     var speed = Math.sqrt((GRAVITATION * lambda) / (2 * Math.PI)) / 20;
     var phase = (oceanwave.phase + time_l*Math.min(speed, 20)) * Math.PI / 180;
-    var z = amp * Math.sin(phase + freq * ball.position);
+    var z = - amp * Math.sin(phase + freq * box.position);
     var v_drift = 4 * Math.PI * Math.PI * amp * amp * Math.exp(4 * Math.PI * z / lambda) * freq / lambda;
 
-    document.getElementById("value_" + idx + "_1").innerHTML = Math.round(Math.abs(lambda));
+    document.getElementById("value_" + idx + "_1").innerHTML = Math.round(Math.abs(lambda/10));
     document.getElementById("value_" + idx + "_2").innerHTML = Math.abs(Math.round(amp * 200) / 100);
     document.getElementById("value_" + idx + "_4").innerHTML = Math.round(speed * 200) / 100;
     document.getElementById("value_" + idx + "_5").innerHTML = Math.abs(Math.round(freq * 200) / 100);
@@ -204,7 +204,7 @@
   }
 
   function initAll(arr){
-    for(i in arr){
+    for(var i in arr){
       var page = arr[i];
       if(typeof wave[page] !== "undefined") for(i in wave[page]) if(typeof wave[page][i] !== "undefined") drawWave(wave[page][i]);
       if(typeof wavesum[page] !== "undefined") for(i in wavesum[page]) if(typeof wavesum[page][i] !== "undefined") drawSum(wavesum[page][i]);
@@ -277,7 +277,7 @@
     return w;
   }
 
-  function oceanwave(idx, wavelength, amplitude, speed, phase, windSpeed, ball, lineWidth, color, bgColor, width, height){
+  function oceanwave(idx, wavelength, amplitude, speed, phase, windSpeed, box, lineWidth, color, bgColor, width, height){
     var w = new Object();
     w.idx = idx;
     w.wavelength = wavelength;
@@ -285,7 +285,7 @@
     w.speed = speed;
     w.phase = phase;
     w.windSpeed = windSpeed;
-    w.ball = ball;
+    w.box = box;
     w.lineWidth = lineWidth;
     w.color = color;
     w.bgColor = bgColor;
@@ -300,7 +300,7 @@
     return w;
   }
 
-  function ball(idx, color, bgColor, position, radius, fixedPosition) {
+  function box(idx, color, bgColor, position, radius, fixedPosition) {
     var b = new Object();
     
     b.idx = idx;
@@ -469,7 +469,7 @@
     ctx.strokeStyle = oceanwave.color;
     ctx.lineWidth = oceanwave.lineWidth;
 
-    var ball = oceanwave.ball;
+    var box = oceanwave.box;
     var windSpeed = -oceanwave.windSpeed / 2;
     var xi = Math.max(10, GRAVITATION * time_l / Math.max(Math.abs(windSpeed / 10000),0.0001));
     var amp = (oceanwave.height * (windSpeed * windSpeed * h(xi) / GRAVITATION)) / (2 * 100) - 2;
@@ -480,14 +480,14 @@
     var lambda = 2 * Math.PI * GRAVITATION / (omega * omega);
     var speed = Math.sqrt((GRAVITATION * lambda) / (2 * Math.PI)) / 20;
     var phase = (oceanwave.phase + time_l*Math.min(speed, 20)) * Math.PI / 180;
-    var z = amp * Math.sin(phase + freq * ball.position);
+    var z = - amp * Math.sin(phase + freq * box.position);
     var v_drift = 4 * Math.PI * Math.PI * amp * amp * Math.exp(4 * Math.PI * z / lambda) * freq / lambda;
-    ball.position = (ball.position + oceanwave.width - v_drift) % oceanwave.width;    
+    box.position = (box.position + oceanwave.width - v_drift) % oceanwave.width;    
     
     ctx.beginPath();
     ctx.strokeStyle = 'rgba('+hexToRgb(oceanwave.color).r+','+hexToRgb(oceanwave.color).g+','+hexToRgb(oceanwave.color).b+','+0.4+')';
     for ( var i = 0; i < oceanwave.width; i++) {
-      var y = amp/4 * Math.sin(phase + (freq*2) * i) + yOrigin;
+      var y = amp/7.3 * Math.sin(phase + (freq*3.2) * i) + yOrigin;
       ctx.lineTo(i, y);
     }
     ctx.lineTo(oceanwave.width,oceanwave.height);
@@ -500,7 +500,7 @@
     ctx.beginPath();
     ctx.strokeStyle = 'rgba('+hexToRgb(oceanwave.color).r+','+hexToRgb(oceanwave.color).g+','+hexToRgb(oceanwave.color).b+','+0.65+')';
     for ( var i = 0; i < oceanwave.width; i++) {
-      var y = amp/2 * Math.sin(phase + (freq*1.25) * i) + yOrigin;
+      var y = amp/3.2 * Math.sin(phase + (freq*1.7) * i) + yOrigin;
       ctx.lineTo(i, y);
     }
     ctx.lineTo(oceanwave.width,oceanwave.height);
@@ -523,15 +523,15 @@
     ctx.fill();
     ctx.stroke();
         
-    for ( var i = - ball.radius; i < oceanwave.width + ball.radius; i++) {
-      if (Math.abs((i + oceanwave.width) % oceanwave.width - ball.position) < 1) {
-        var y1 = amp * Math.sin(phase + freq * (i-ball.radius / 2)) + yOrigin;
-        var y2 = amp * Math.sin(phase + freq * (i+ball.radius * 3 / 2)) + yOrigin;
+    for ( var i = - box.radius; i < oceanwave.width + box.radius; i++) {
+      if (Math.abs((i + oceanwave.width) % oceanwave.width - box.position) < 1) {
+        var y1 = amp * Math.sin(phase + freq * (i-box.radius / 2)) + yOrigin;
+        var y2 = amp * Math.sin(phase + freq * (i+box.radius * 3 / 2)) + yOrigin;
         
-        var dist = Math.sqrt((ball.radius*ball.radius) + (y1-y2)*(y1-y2)/4);
-        var radius = ball.radius * (ball.radius / dist);
+        var dist = Math.sqrt((box.radius*box.radius) + (y1-y2)*(y1-y2)/4);
+        var radius = box.radius * (box.radius / dist);
         
-        ctx.strokeStyle = ball.color;
+        ctx.strokeStyle = box.color;
         ctx.beginPath();
         ctx.moveTo(i, y1 - radius);
         ctx.lineTo(i + 2 * radius, y2 - radius);
@@ -540,10 +540,10 @@
         ctx.closePath();
         ctx.stroke();
         
-        ctx.fillStyle = ball.bgColor;
+        ctx.fillStyle = box.bgColor;
         ctx.fill();
 
-        ctx.strokeStyle = 'rgba('+hexToRgb(ball.color).r+','+hexToRgb(ball.color).g+','+hexToRgb(ball.color).b+','+0.4+')';
+        ctx.strokeStyle = 'rgba('+hexToRgb(box.color).r+','+hexToRgb(box.color).g+','+hexToRgb(box.color).b+','+0.4+')';
         ctx.beginPath();
         ctx.moveTo(i, y1 - radius);
         ctx.lineTo(i + 2 * radius + y1 - y2, y2 + radius);

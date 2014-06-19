@@ -352,9 +352,7 @@
     ctx.beginPath();
     ctx.strokeStyle = wave.color;
     for ( var i = 0; i < wave.width; i++) {
-      var y1 = amp * Math.sin(phase + freq * i) + yOrigin;
       var y2 = amp * Math.sin(phase + freq * (i + 1)) + yOrigin;
-      ctx.moveTo(i, y1);
       ctx.lineTo(i + 1, y2);
     }
     ctx.stroke();

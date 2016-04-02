@@ -12,7 +12,7 @@ This program have three features.
 
 In this mode, you can adjust each variables and see the results (animation, math function, and some other stuffs) instantly.
 
-**Interference / Superposition **
+**Interference / Superposition**
 
 In this mode, you can run a simulation of two colliding waves. You can tweak each wave variables and see how it results in the behaviour of the collided wave.
 

@@ -1,7 +1,7 @@
 (function() {
   var page, paused;
   var wave, wavesum, oceanwave, bg = [], waveinfo = [], oceanwaveinfo = [], waveformula = [];
-  var wavelengthRange, amplitudeRange, phaseRange, speedRange;
+  var wavelengthRange, amplitudeRange, phaseRange, speedRange, fetchRange;
   var WAVELENGTH_MAGNIFY = 5;
   var GRAVITATION = 9.8;
   var time, timer;
@@ -20,6 +20,7 @@
     phaseRange = new range(0,360);
     speedRange = new range(-50,50);
     windSpeedRange = new range(-45,45);
+    fetchRange = new range(0, 10000);
     time = [];
     time['single_page'] = 0;
     time['inter_page'] = 0;
@@ -48,7 +49,7 @@
     waveinfo['inter_page'][3] = wave['inter_page'][1];
 
     oceanwave['ocean_page'] = [];
-    oceanwave['ocean_page'][0] = new oceanwave(4, 120, 30, 5, 0, 28, new box(1,'#C19264','#f9ba3e',100,15), 3, '#fff', '#00b2ff', 1024, 600);
+    oceanwave['ocean_page'][0] = new oceanwave(4, 120, 30, 5, 0, 28, 5000, new box(1,'#C19264','#f9ba3e',100,15), 3, '#fff', '#00b2ff', 1024, 600);
     waveControls(oceanwave['ocean_page'][0]);
     oceanwaveinfo['ocean_page'] = [];
     oceanwaveinfo['ocean_page'][0] = oceanwave['ocean_page'][0];
@@ -150,7 +151,7 @@
 
     var box = oceanwave.box;
     var windSpeed = -oceanwave.windSpeed / 2;
-    var xi = Math.max(10, GRAVITATION * time_l / Math.max(Math.abs(windSpeed / 10000),0.0001));
+    var xi = Math.max(10, GRAVITATION * oceanwave.fetch / Math.max(Math.abs(windSpeed / 100),0.0001));
     var amp = (oceanwave.height * (windSpeed * windSpeed * h(xi) / GRAVITATION)) / (2 * 100) - 2;
     var freq = 2 * Math.PI * windSpeed * p(xi) / (GRAVITATION * WAVELENGTH_MAGNIFY) ;
     var yOrigin = oceanwave.height / 2;
@@ -170,6 +171,7 @@
     document.getElementById("value_" + idx + "_7").innerHTML = Math.abs(Math.round(omega * 200) / 100);
     document.getElementById("value_" + idx + "_8").innerHTML = Math.round(oceanwave.windSpeed * 100) / 100;
     document.getElementById("value_" + idx + "_9").innerHTML = - Math.round(v_drift * 200) / 100;
+    document.getElementById("value_" + idx + "_10").innerHTML = oceanwave.fetch;
   }
 
   function waveControls(wave) {
@@ -178,6 +180,7 @@
     slider(wave, 3, phaseRange, 'horizontal', wave.phase);
     slider(wave, 4, speedRange, 'horizontal', wave.speed);
     slider(wave, 8, windSpeedRange, 'horizontal', wave.windSpeed);
+    slider(wave, 9, fetchRange, 'horizontal', wave.fetch);
   }
 
   function slider(wave, i, range, orientation, val){
@@ -201,6 +204,7 @@
     else if (i == 3) wave.phase = val;
     else if (i == 4) wave.speed = val;
     else if (i == 8) wave.windSpeed = val;
+    else if (i == 9) wave.fetch = val;
   }
 
   function initAll(arr){
@@ -277,7 +281,7 @@
     return w;
   }
 
-  function oceanwave(idx, wavelength, amplitude, speed, phase, windSpeed, box, lineWidth, color, bgColor, width, height){
+  function oceanwave(idx, wavelength, amplitude, speed, phase, windSpeed, fetch, box, lineWidth, color, bgColor, width, height){
     var w = new Object();
     w.idx = idx;
     w.wavelength = wavelength;
@@ -285,6 +289,7 @@
     w.speed = speed;
     w.phase = phase;
     w.windSpeed = windSpeed;
+    w.fetch = fetch;
     w.box = box;
     w.lineWidth = lineWidth;
     w.color = color;
@@ -471,7 +476,8 @@
 
     var box = oceanwave.box;
     var windSpeed = -oceanwave.windSpeed / 2;
-    var xi = Math.max(10, GRAVITATION * time_l / Math.max(Math.abs(windSpeed / 10000),0.0001));
+    console.log(oceanwave.fetch);
+    var xi = Math.max(10, GRAVITATION * oceanwave.fetch / Math.max(Math.abs(windSpeed / 100),0.0001));
     var amp = (oceanwave.height * (windSpeed * windSpeed * h(xi) / GRAVITATION)) / (2 * 100) - 2;
     var freq = 2 * Math.PI * windSpeed * p(xi) / (GRAVITATION * WAVELENGTH_MAGNIFY) ;
     var yOrigin = oceanwave.height / 2;
@@ -491,7 +497,7 @@
       ctx.lineTo(i, y);
     }
     ctx.lineTo(oceanwave.width,oceanwave.height);
-    ctx.lineTo(0,oceanwave.height);
+    ctx.lineTo(-2,oceanwave.height);
     ctx.closePath();
     ctx.fillStyle = 'rgba('+hexToRgb(oceanwave.bgColor).r+','+hexToRgb(oceanwave.bgColor).g+','+hexToRgb(oceanwave.bgColor).b+','+0.4+')';
     ctx.fill();
@@ -504,20 +510,21 @@
       ctx.lineTo(i, y);
     }
     ctx.lineTo(oceanwave.width,oceanwave.height);
-    ctx.lineTo(0,oceanwave.height);
+    ctx.lineTo(-2,oceanwave.height);
     ctx.closePath();
     ctx.fillStyle = 'rgba('+hexToRgb(oceanwave.bgColor).r+','+hexToRgb(oceanwave.bgColor).g+','+hexToRgb(oceanwave.bgColor).b+','+0.65+')';
     ctx.fill();
     ctx.stroke();
     
     ctx.beginPath();
+    ctx.moveTo(-2, 0); 
     ctx.strokeStyle = 'rgba('+hexToRgb(oceanwave.color).r+','+hexToRgb(oceanwave.color).g+','+hexToRgb(oceanwave.color).b+','+0.9+')';
     for ( var i = 0; i < oceanwave.width; i++) {
       var y = amp * Math.sin(phase + freq * i) + yOrigin;
       ctx.lineTo(i, y);
     }
     ctx.lineTo(oceanwave.width,oceanwave.height);
-    ctx.lineTo(0,oceanwave.height);
+    ctx.lineTo(-2,oceanwave.height);
     ctx.closePath();
     ctx.fillStyle = 'rgba('+hexToRgb(oceanwave.bgColor).r+','+hexToRgb(oceanwave.bgColor).g+','+hexToRgb(oceanwave.bgColor).b+','+1+')';
     ctx.fill();
@@ -555,13 +562,14 @@
     }
 
     ctx.beginPath();
+    ctx.moveTo(-2, 0); 
     ctx.strokeStyle = 'rgba('+hexToRgb(oceanwave.color).r+','+hexToRgb(oceanwave.color).g+','+hexToRgb(oceanwave.color).b+','+0.5+')';
     for ( var i = 0; i < oceanwave.width; i++) {
       var y = amp * Math.sin(phase + freq * i) + yOrigin;
       ctx.lineTo(i, y);
     }
     ctx.lineTo(oceanwave.width,oceanwave.height);
-    ctx.lineTo(0,oceanwave.height);
+    ctx.lineTo(-2,oceanwave.height);
     ctx.closePath();
     ctx.fillStyle = 'rgba('+hexToRgb(oceanwave.bgColor).r+','+hexToRgb(oceanwave.bgColor).g+','+hexToRgb(oceanwave.bgColor).b+','+0.2+')';
     ctx.fill();

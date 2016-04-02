@@ -142,6 +142,11 @@ a:hover {
   list-style: none;
 }
 
+.information li {
+  height: 15px;
+  margin-bottom: 6px;
+}
+
 .information.interference {
   width: 150px;
   height: 150px;
@@ -235,9 +240,21 @@ a:hover {
   bottom: 40px;
   width: 300px;
 }
-#slider_4_8 {
+#slider_4_9 {
   position: absolute;
   top: 550px;
+  left: 30px;
+  width:200px;
+}
+#slider_4_9 sub {
+  position: absolute;
+  font-size: x-small;
+  top: 7px;
+  width: 100px;
+}
+#slider_4_8 {
+  position: absolute;
+  top: 520px;
   left: 30px;
   width:200px;
 }
